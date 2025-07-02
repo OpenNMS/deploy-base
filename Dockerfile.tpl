@@ -104,10 +104,14 @@ COPY --from=binary-build /usr/src/jicmp6/jicmp6.jar /usr/share/java/
 # Install jattach
 COPY --from=binary-build /usr/src/jattach/build/jattach /usr/bin/
 
-RUN mkdir -p /opt/prom-jmx-exporter && \
-    curl "${PROM_JMX_EXPORTER_URL}" --output /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar && \
-    chown -R 10001:0 /opt/prom-jmx-exporter && \
-    chmod 0640 /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar
+RUN mkdir -p /opt/prom-jmx-exporter
+
+WORKDIR /opt/prom-jmx-exporter
+
+RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar && \
+    echo "${PROM_JMX_EXPORTER_SHA256} jmx_prometheus_javaagent.jar" > jmx_prometheus_javaagent.jar.sha256 && \
+    sha256sum -c /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar.sha256 && \
+    chown -R 10001:0 /opt/prom-jmx-exporter
 
 RUN curl -L --output /tmp/repo.rpm https://yum.opennms.org/repofiles/opennms-repo-stable-rhel9.noarch.rpm && \
     rpm -Uf /tmp/repo.rpm && \
