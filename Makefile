@@ -54,8 +54,8 @@ HAVEGED_GIT_REPO_URL      := https://github.com/jirka-h/haveged
 CONFD_SOURCE              := https://github.com/kelseyhightower/confd.git
 CONFD_VERSION             := 0.16.0
 
-PROM_JMX_EXPORTER_VERSION := 0.18.0
-PROM_JMX_EXPORTER_URL     := https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/$(PROM_JMX_EXPORTER_VERSION)/jmx_prometheus_javaagent-$(PROM_JMX_EXPORTER_VERSION).jar
+PROM_JMX_EXPORTER_VERSION := 1.3.0
+PROM_JMX_EXPORTER_URL     := https://github.com/prometheus/jmx_exporter/releases/download/$(PROM_JMX_EXPORTER_VERSION)/jmx_prometheus_javaagent-$(PROM_JMX_EXPORTER_VERSION).jar
 
 help:
 	@echo ""
