@@ -80,11 +80,11 @@ RUN /usr/local/bin/do-setcap.sh
 
 # Install confd
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
-      curl -L "https://github.com/abtreece/confd/releases/download/v0.30.0/confd-v0.30.0-linux-amd64.tar.gz" --output /tmp/confd.tar.gz; \
+      curl -L "${CONFD_SOURCE}/releases/download/v${CONFD_VERSION}/confd-v${CONFD_VERSION}-linux-amd64.tar.gz" --output /tmp/confd.tar.gz; \
     elif [ "$(uname -m)" = "armv7l" ]; then \
-      curl -L "https://github.com/abtreece/confd/releases/download/v0.30.0/confd-v0.30.0-linux-arm7.tar.gz" --output /tmp/confd.tar.gz; \
+      curl -L "${CONFD_SOURCE}/releases/download/v${CONFD_VERSION}/confd-v${CONFD_VERSION}-linux-arm7.tar.gz" --output /tmp/confd.tar.gz; \
     else \
-      curl -L "https://github.com/abtreece/confd/releases/download/v0.30.0/confd-v0.30.0-linux-arm64.tar.gz" --output /tmp/confd.tar.gz; \
+      curl -L "${CONFD_SOURCE}/releases/download/v${CONFD_VERSION}/confd-v${CONFD_VERSION}-linux-arm64.tar.gz" --output /tmp/confd.tar.gz; \
     fi && \
     cd /usr/bin && \
     tar -xzf /tmp/confd.tar.gz && \

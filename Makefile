@@ -51,8 +51,8 @@ JATTACH_VERSION           := v2.1
 
 HAVEGED_GIT_REPO_URL      := https://github.com/jirka-h/haveged
 
-CONFD_SOURCE              := https://github.com/kelseyhightower/confd.git
-CONFD_VERSION             := 0.16.0
+CONFD_SOURCE              := https://github.com/abtreece/confd
+CONFD_VERSION             := 0.30.0
 
 PROM_JMX_EXPORTER_VERSION := 1.3.0
 PROM_JMX_EXPORTER_URL     := https://github.com/prometheus/jmx_exporter/releases/download/$(PROM_JMX_EXPORTER_VERSION)/jmx_prometheus_javaagent-$(PROM_JMX_EXPORTER_VERSION).jar
