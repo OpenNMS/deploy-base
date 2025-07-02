@@ -105,7 +105,9 @@ COPY --from=binary-build /usr/src/jicmp6/jicmp6.jar /usr/share/java/
 COPY --from=binary-build /usr/src/jattach/build/jattach /usr/bin/
 
 RUN mkdir -p /opt/prom-jmx-exporter && \
-    curl "${PROM_JMX_EXPORTER_URL}" --output /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar 
+    curl "${PROM_JMX_EXPORTER_URL}" --output /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar && \
+    chown -R 10001:0 /opt/prom-jmx-exporter && \
+    chmod 0640 /opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar
 
 RUN curl -L --output /tmp/repo.rpm https://yum.opennms.org/repofiles/opennms-repo-stable-rhel9.noarch.rpm && \
     rpm -Uf /tmp/repo.rpm && \
