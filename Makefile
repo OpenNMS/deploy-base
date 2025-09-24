@@ -49,8 +49,6 @@ JICMP6_VERSION            := jicmp6-3.0.0-2
 JATTACH_GIT_REPO_URL      := https://github.com/jattach/jattach
 JATTACH_VERSION           := v2.1
 
-HAVEGED_GIT_REPO_URL      := https://github.com/jirka-h/haveged
-
 CONFD_SOURCE              := https://github.com/abtreece/confd
 CONFD_VERSION             := 0.30.0
 
