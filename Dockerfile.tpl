@@ -115,6 +115,17 @@ RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar &
     chmod 2775 /opt/prom-jmx-exporter && \
     chmod 0664 /opt/prom-jmx-exporter/*
 
+RUN mkdir -p /opt/pyroscope
+
+WORKDIR /opt/pyroscope
+
+RUN curl -L "${PYROSCOPE_URL}" --output ./pyroscope.jar && \
+    echo "${PYROSCOPE_SHA256} pyroscope.jar" > ./pyroscope.jar.sha256 && \
+    sha256sum -c ./pyroscope.jar.sha256 && \
+    chown -R 10001:0 /opt/pyroscope && \
+    chmod 2775 /opt/pyroscope && \
+    chmod 0664 /opt/pyroscope/*
+
 RUN curl -L --output /tmp/repo.rpm https://yum.opennms.org/repofiles/opennms-repo-stable-rhel9.noarch.rpm && \
     rpm -Uf /tmp/repo.rpm && \
     rpm --import https://yum.opennms.org/OPENNMS-GPG-KEY

@@ -56,7 +56,11 @@ CONFD_VERSION             := 0.30.0
 
 PROM_JMX_EXPORTER_VERSION := 1.4.0
 PROM_JMX_EXPORTER_URL     := https://github.com/prometheus/jmx_exporter/releases/download/$(PROM_JMX_EXPORTER_VERSION)/jmx_prometheus_javaagent-$(PROM_JMX_EXPORTER_VERSION).jar
-PROM_JMX_EXPORTER_SHA256  :="db1492e95a7ee95cd5e0a969875c0d4f0ef6413148d750351a41cc71d775f59a"
+PROM_JMX_EXPORTER_SHA256  := "db1492e95a7ee95cd5e0a969875c0d4f0ef6413148d750351a41cc71d775f59a"
+
+PYROSCOPE_VERSION         := "2.1.2"
+PYROSCOPE_SHA256          := "bbf88777b8241934ce24447cd6bd1be3f80497d153972d32a716fb21b1e12b32"
+PYROSCOPE_URL             := "https://github.com/grafana/pyroscope-java/releases/download/v${PYROSCOPE_VERSION}/pyroscope.jar"
 
 help:
 	@echo ""
