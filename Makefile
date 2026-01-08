@@ -18,7 +18,7 @@ ARCHITECTURE              := linux/amd64
 BUILDER_INSTANCE          := env-deploy-base-oci
 TAG_ARCH                  := $(subst /,-,$(subst linux/,,$(ARCHITECTURE)))
 
-JAVA_MAJOR_VERSION        := 11
+JAVA_MAJOR_VERSION        := 21
 JAVA_PKG                  := openjdk-$(JAVA_MAJOR_VERSION)-jre-headless
 JAVA_HOME                  = /usr/lib/jvm/jre-${JAVA_MAJOR_VERSION}
 
