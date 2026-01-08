@@ -41,10 +41,10 @@ BUILD_URL                 ?= unset
 BUILD_BRANCH              ?= $(shell git branch --show-current)
 
 JICMP_GIT_REPO_URL        := https://github.com/opennms/jicmp
-JICMP_VERSION             := jicmp-3.0.0-2
+JICMP_VERSION             := jicmp-3.0.5-1
 
 JICMP6_GIT_REPO_URL       := https://github.com/opennms/jicmp6
-JICMP6_VERSION            := jicmp6-3.0.0-2
+JICMP6_VERSION            := jicmp6-3.0.5-1
 
 JATTACH_GIT_REPO_URL      := https://github.com/jattach/jattach
 JATTACH_VERSION           := v2.1
