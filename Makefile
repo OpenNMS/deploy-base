@@ -24,7 +24,7 @@ JAVA_HOME                  = /usr/lib/jvm/jre-${JAVA_MAJOR_VERSION}
 
 # Version fallback uses the latest git version tag or the git hash if no git version is set.
 # e.g. last git version tag is v1.1.0 -> 1.1.0 is used, otherwise the git hash
-VERSION                   ?= ubi9-$(shell cat version.txt | sed -e 's,[\r\n]*,,')
+VERSION                   ?= ubi10-$(shell cat version.txt | sed -e 's,[\r\n]*,,')
 CONTAINER_REGISTRY        ?= localhost
 CONTAINER_REGISTRY_LOGIN  ?= unset
 CONTAINER_REGISTRY_PASS   ?= unset
