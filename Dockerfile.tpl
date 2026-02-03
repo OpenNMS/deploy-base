@@ -122,6 +122,7 @@ RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar &
 
 RUN curl -L --output /tmp/repo.rpm https://yum.opennms.org/repofiles/opennms-repo-stable-rhel9.noarch.rpm && \
     rpm -Uf /tmp/repo.rpm && \
+    microdnf install -y crypto-policies && \
     update-crypto-policies --set DEFAULT:SHA1 && \
     rpm --import https://yum.opennms.org/OPENNMS-GPG-KEY && \
     update-crypto-policies --set DEFAULT
