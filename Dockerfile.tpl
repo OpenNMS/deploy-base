@@ -73,10 +73,10 @@ FROM core
 # if JAVA_MAJOR_VERSION is 11, use this:
 # https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.30_7.tar.gz
 RUN if [ "${JAVA_MAJOR_VERSION}" = "11" ]; then \
-    if [ "${ARCHITECTURE}" = "amd64" ]; then \
-    curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.30_7.tar.gz" --output /tmp/openjdk.tar.gz && \
-    elif [ "${ARCHITECTURE}" = "arm64" ]; then \
-    curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_aarch64_linux_hotspot_11.0.30_7.tar.gz" --output /tmp/openjdk.tar.gz && \
+    if echo "${ARCHITECTURE}" | grep -q "amd64"; then \
+        curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.30_7.tar.gz" --output /tmp/openjdk.tar.gz; \
+    elif echo "${ARCHITECTURE}" | grep -q "arm64"; then \
+        curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_aarch64_linux_hotspot_11.0.30_7.tar.gz" --output /tmp/openjdk.tar.gz; \
     fi && \
     tar -xzf /tmp/openjdk.tar.gz -C /opt && \
     rm -f /tmp/openjdk.tar.gz; \
@@ -84,10 +84,10 @@ RUN if [ "${JAVA_MAJOR_VERSION}" = "11" ]; then \
 # if JAVA_MAJOR_VERSION is 17, use this:
 # https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz
 RUN if [ "${JAVA_MAJOR_VERSION}" = "17" ]; then \
-    if [ "${ARCHITECTURE}" = "amd64" ]; then \
-    curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz" --output /tmp/openjdk.tar.gz && \
-    elif [ "${ARCHITECTURE}" = "arm64" ]; then \
-    curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.18_8.tar.gz" --output /tmp/openjdk.tar.gz && \
+    if echo "${ARCHITECTURE}" | grep -q "amd64"; then \
+        curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz" --output /tmp/openjdk.tar.gz; \
+    elif echo "${ARCHITECTURE}" | grep -q "arm64"; then \
+        curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.18_8.tar.gz" --output /tmp/openjdk.tar.gz; \
     fi && \
     tar -xzf /tmp/openjdk.tar.gz -C /opt && \
     rm -f /tmp/openjdk.tar.gz; \
@@ -101,19 +101,17 @@ RUN if [ "${JAVA_MAJOR_VERSION}" != "11" ] && [ "${JAVA_MAJOR_VERSION}" != "17" 
     rm -rf /var/cache/yum \
     fi
 
-# Set JAVA_HOME based on installed version
+# Set JAVA_HOME based on installed version - create a symlink for consistency
 RUN if [ "${JAVA_MAJOR_VERSION}" = "11" ]; then \
-    export JAVA_HOME=/opt/jdk-11.0.30+7; \
+    ln -sf /opt/jdk-11.0.30+7 /opt/java; \
     elif [ "${JAVA_MAJOR_VERSION}" = "17" ]; then \
-    export JAVA_HOME=/opt/jdk-17.0.18+8; \
+    ln -sf /opt/jdk-17.0.18+8 /opt/java; \
     else \
-    export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))); \
-    fi && \
-    echo "JAVA_HOME is set to ${JAVA_HOME}" && \
-    echo "${JAVA_HOME}" > /etc/java_home
-    
+    ln -sf $(dirname $(dirname $(readlink -f $(which java)))) /opt/java; \
+    fi
+
 # Set JAVA_HOME at runtime
-# ENV JAVA_HOME=${JAVA_HOME}
+ENV JAVA_HOME=/opt/java
 
 # To be able to use DGRAM to send ICMP messages we have to give the java binary CAP_NET_RAW capabilities in Linux.
 COPY do-setcap.sh /usr/local/bin/
