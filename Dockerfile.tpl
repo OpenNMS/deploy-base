@@ -39,26 +39,25 @@ RUN microdnf -y install \
     libtool \
     make
 
+RUN curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz
+RUN tar -xzf OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz -C /opt
+
 ## Checkout and build JICMP
 RUN git config --global advice.detachedHead false
 
-RUN git clone --depth 1 --branch "${JICMP_VERSION}" "${JICMP_GIT_REPO_URL}" /usr/src/jicmp && \
+RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=$JAVA_HOME/bin:$PATH && \
+    git clone --depth 1 --branch "${JICMP_VERSION}" "${JICMP_GIT_REPO_URL}" /usr/src/jicmp && \
     cd /usr/src/jicmp && \
     git submodule update --init --recursive --depth 1 && \
-    git branch -r && \
-    git checkout ronny/jicmp-27 && \
-    git pull && \
     autoreconf -fvi && \
     ./configure
 RUN cd /usr/src/jicmp && make -j1
 
 # Checkout and build JICMP6
-RUN git clone --depth 1 --branch "${JICMP6_VERSION}" "${JICMP6_GIT_REPO_URL}" /usr/src/jicmp6 && \
+RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=$JAVA_HOME/bin:$PATH && \
+    git clone --depth 1 --branch "${JICMP6_VERSION}" "${JICMP6_GIT_REPO_URL}" /usr/src/jicmp6 && \
     cd /usr/src/jicmp6 && \
     git submodule update --init --recursive --depth 1 && \
-    git branch -r && \
-    git checkout ronny/jicmp-27 && \
-    git pull && \
     autoreconf -fvi && \
     ./configure
 RUN cd /usr/src/jicmp6 && make -j1
@@ -141,4 +140,3 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opennms.cicd.branch="${BUILD_BRANCH}" \
       org.opennms.cicd.buildurl="${BUILD_URL}" \
       org.opennms.cicd.buildnumber="${BUILD_NUMBER}"
-
