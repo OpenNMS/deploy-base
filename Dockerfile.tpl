@@ -35,7 +35,6 @@ RUN microdnf -y install \
     automake \
     gcc \
     git \
-    java-21-openjdk-devel \
     libtool \
     make
 
@@ -45,7 +44,7 @@ RUN tar -xzf OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz -C /opt
 ## Checkout and build JICMP
 RUN git config --global advice.detachedHead false
 
-RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=$JAVA_HOME/bin:$PATH && \
+RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=/opt/jdk8u482-b08/bin:$PATH && \
     git clone --depth 1 --branch "${JICMP_VERSION}" "${JICMP_GIT_REPO_URL}" /usr/src/jicmp && \
     cd /usr/src/jicmp && \
     git submodule update --init --recursive --depth 1 && \
@@ -54,7 +53,7 @@ RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=$JAVA_HOME/bin:$PATH && \
 RUN cd /usr/src/jicmp && make -j1
 
 # Checkout and build JICMP6
-RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=$JAVA_HOME/bin:$PATH && \
+RUN export JAVA_HOME=/opt/jdk8u482-b08 && export PATH=/opt/jdk8u482-b08/bin:$PATH && \
     git clone --depth 1 --branch "${JICMP6_VERSION}" "${JICMP6_GIT_REPO_URL}" /usr/src/jicmp6 && \
     cd /usr/src/jicmp6 && \
     git submodule update --init --recursive --depth 1 && \
