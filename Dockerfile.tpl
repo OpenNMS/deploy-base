@@ -96,9 +96,8 @@ RUN if [ "${JAVA_MAJOR_VERSION}" = "17" ]; then \
 RUN if [ "${JAVA_MAJOR_VERSION}" != "11" ] && [ "${JAVA_MAJOR_VERSION}" != "17" ]; then \
     echo "Installing OpenJDK ${JAVA_MAJOR_VERSION} via microdnf"; \
     microdnf -y install \
-    "java-${JAVA_MAJOR_VERSION}-openjdk-headless" \
-    && \
-    rm -rf /var/cache/yum \
+    "java-${JAVA_MAJOR_VERSION}-openjdk-headless" && \
+    rm -rf /var/cache/yum; \
     fi
 
 # Set JAVA_HOME based on installed version - create a symlink for consistency
