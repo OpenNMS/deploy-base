@@ -45,7 +45,7 @@ RUN git config --global advice.detachedHead false
 RUN git clone --depth 1 --branch "${JICMP_VERSION}" "${JICMP_GIT_REPO_URL}" /usr/src/jicmp && \
     cd /usr/src/jicmp && \
     git submodule update --init --recursive --depth 1 && \
-    git Checkout ronny/JICMP-27 && \
+    git checkout ronny/JICMP-27 && \
     autoreconf -fvi && \
     ./configure
 RUN cd /usr/src/jicmp && make -j1
@@ -54,7 +54,7 @@ RUN cd /usr/src/jicmp && make -j1
 RUN git clone --depth 1 --branch "${JICMP6_VERSION}" "${JICMP6_GIT_REPO_URL}" /usr/src/jicmp6 && \
     cd /usr/src/jicmp6 && \
     git submodule update --init --recursive --depth 1 && \
-    git Checkout ronny/JICMP-27 && \
+    git checkout ronny/JICMP-27 && \
     autoreconf -fvi && \
     ./configure
 RUN cd /usr/src/jicmp6 && make -j1
