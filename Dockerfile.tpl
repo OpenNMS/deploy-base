@@ -38,8 +38,13 @@ RUN microdnf -y install \
     libtool \
     make
 
-RUN curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz
-RUN tar -xzf OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz -C /opt
+
+RUN if [ "${ARCHITECTURE}" = "amd64" ]; then \
+    curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
+    elif [ "${ARCHITECTURE}" = "arm64" ]; then \
+    curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_aarch64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
+    fi && \
+    tar -xzf /tmp/openjdk8.tar.gz -C /opt
 
 ## Checkout and build JICMP
 RUN git config --global advice.detachedHead false
