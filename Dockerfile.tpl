@@ -39,10 +39,10 @@ RUN microdnf -y install \
     make
 
 
-RUN if [ "${ARCHITECTURE}" = "amd64" ]; then \
-    curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
-    elif [ "${ARCHITECTURE}" = "arm64" ]; then \
-    curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_aarch64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
+RUN if [ "$(uname -m)" = "x86_64" ]; then \
+        curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
+    elif [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
+        curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_aarch64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
     fi && \
     tar -xzf /tmp/openjdk8.tar.gz -C /opt
 
