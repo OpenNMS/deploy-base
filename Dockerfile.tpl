@@ -40,11 +40,12 @@ RUN microdnf -y install \
 
 
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
-        curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
+        curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
     elif [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
-        curl -LO https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_aarch64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
+        curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_aarch64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
     fi && \
-    tar -xzf /tmp/openjdk8.tar.gz -C /opt
+    tar -xzf /tmp/openjdk8.tar.gz -C /opt && \
+    rm -f /tmp/openjdk8.tar.gz; \
 
 ## Checkout and build JICMP
 RUN git config --global advice.detachedHead false
@@ -78,9 +79,9 @@ FROM core
 # if JAVA_MAJOR_VERSION is 11, use this:
 # https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.30_7.tar.gz
 RUN if [ "${JAVA_MAJOR_VERSION}" = "11" ]; then \
-    if echo "${ARCHITECTURE}" | grep -q "amd64"; then \
+    if [ "$(uname -m)" = "x86_64" ]; then \
         curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.30_7.tar.gz" --output /tmp/openjdk.tar.gz; \
-    elif echo "${ARCHITECTURE}" | grep -q "arm64"; then \
+    elif [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
         curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.30%2B7/OpenJDK11U-jdk_aarch64_linux_hotspot_11.0.30_7.tar.gz" --output /tmp/openjdk.tar.gz; \
     fi && \
     tar -xzf /tmp/openjdk.tar.gz -C /opt && \
@@ -89,9 +90,9 @@ RUN if [ "${JAVA_MAJOR_VERSION}" = "11" ]; then \
 # if JAVA_MAJOR_VERSION is 17, use this:
 # https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz
 RUN if [ "${JAVA_MAJOR_VERSION}" = "17" ]; then \
-    if echo "${ARCHITECTURE}" | grep -q "amd64"; then \
+    if [ "$(uname -m)" = "x86_64" ]; then \
         curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz" --output /tmp/openjdk.tar.gz; \
-    elif echo "${ARCHITECTURE}" | grep -q "arm64"; then \
+    elif [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
         curl -L "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.18_8.tar.gz" --output /tmp/openjdk.tar.gz; \
     fi && \
     tar -xzf /tmp/openjdk.tar.gz -C /opt && \
