@@ -161,6 +161,7 @@ workflows:
               ignore:
                 - master
                 - variant/ubi
+                - variant/ubi10
       - publish-single-arch:
           matrix:
             parameters:
@@ -174,6 +175,7 @@ workflows:
               only:
                 - master
                 - variant/ubi
+                - variant/ubi10
       - publish-multi-arch:
           matrix:
             parameters:
@@ -188,3 +190,4 @@ workflows:
               only:
                 - master
                 - variant/ubi
+                - variant/ubi10
