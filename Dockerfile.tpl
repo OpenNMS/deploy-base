@@ -45,7 +45,7 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
         curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u482-b08/OpenJDK8U-jdk_aarch64_linux_hotspot_8u482b08.tar.gz --output /tmp/openjdk8.tar.gz; \
     fi && \
     tar -xzf /tmp/openjdk8.tar.gz -C /opt && \
-    rm -f /tmp/openjdk8.tar.gz; \
+    rm -f /tmp/openjdk8.tar.gz
 
 ## Checkout and build JICMP
 RUN git config --global advice.detachedHead false
