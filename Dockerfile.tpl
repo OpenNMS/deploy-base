@@ -159,6 +159,9 @@ RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar &
     chmod 2775 /opt/prom-jmx-exporter && \
     chmod 0664 /opt/prom-jmx-exporter/*
 
+# Install OpenNMS yum repo, 
+# NOTE: we are disabling gpgcheck and signature verification here to avoid issues with
+# our current signing setup; 
 RUN curl -L --output /tmp/repo.rpm https://yum.opennms.org/repofiles/opennms-repo-stable-rhel9.noarch.rpm && \
     rpm -Uvh --nodigest --nosignature --noverify /tmp/repo.rpm && \
     sed -i 's/gpgcheck=1/gpgcheck=0/g' /etc/yum.repos.d/opennms*.repo && \
