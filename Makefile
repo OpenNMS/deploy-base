@@ -10,7 +10,7 @@
 
 SHELL                     := bash -o nounset -o pipefail -o errexit
 BUILD_DATE                := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-BASE_IMAGE                := registry.access.redhat.com/ubi9-minimal
+BASE_IMAGE                := registry.access.redhat.com/ubi10-minimal
 
 DOCKER_BUILDKIT           := 1
 DOCKER_CLI_EXPERIMENTAL   := enabled

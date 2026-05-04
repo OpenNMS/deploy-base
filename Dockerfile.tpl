@@ -35,7 +35,7 @@ RUN microdnf -y install \
     automake \
     gcc \
     git \
-    java-1.8.0-openjdk-devel \
+    java-21-openjdk-devel \
     libtool \
     make
 
