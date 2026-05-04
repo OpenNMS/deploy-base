@@ -11,7 +11,7 @@ aliases:
       echo "export DOCKER_REGISTRY=${DOCKER_REGISTRY}" >> $BASH_ENV
       echo "export DOCKER_ORG=${DOCKER_ORG}" >> $BASH_ENV
       echo "export IMAGE=${DOCKER_REGISTRY}/${DOCKER_ORG}/deploy-base" >> $BASH_ENV
-      echo "export VERSION=ubi9-$(cat version.txt | sed -e 's,[\r\n]*,,').b<< pipeline.number >>" >> $BASH_ENV
+      echo "export VERSION=ubi10-$(cat version.txt | sed -e 's,[\r\n]*,,').b<< pipeline.number >>" >> $BASH_ENV
     environment:
       DOCKER_REGISTRY: docker.io
       DOCKER_ORG: opennms
@@ -165,7 +165,7 @@ workflows:
           matrix:
             parameters:
               architecture: [linux/amd64,linux/arm64]
-              jdk: [ "21"]
+              jdk: ["21"]
           context:
             - "docker-content-trust"
             - "docker-publish-account"
