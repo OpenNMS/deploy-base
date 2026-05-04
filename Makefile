@@ -10,7 +10,7 @@
 
 SHELL                     := bash -o nounset -o pipefail -o errexit
 BUILD_DATE                := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-BASE_IMAGE                := registry.access.redhat.com/ubi9-minimal
+BASE_IMAGE                := registry.access.redhat.com/ubi10-minimal
 
 DOCKER_BUILDKIT           := 1
 DOCKER_CLI_EXPERIMENTAL   := enabled
@@ -18,13 +18,13 @@ ARCHITECTURE              := linux/amd64
 BUILDER_INSTANCE          := env-deploy-base-oci
 TAG_ARCH                  := $(subst /,-,$(subst linux/,,$(ARCHITECTURE)))
 
-JAVA_MAJOR_VERSION        := 11
+JAVA_MAJOR_VERSION        := 21
 JAVA_PKG                  := openjdk-$(JAVA_MAJOR_VERSION)-jre-headless
 JAVA_HOME                  = /usr/lib/jvm/jre-${JAVA_MAJOR_VERSION}
 
 # Version fallback uses the latest git version tag or the git hash if no git version is set.
 # e.g. last git version tag is v1.1.0 -> 1.1.0 is used, otherwise the git hash
-VERSION                   ?= ubi9-$(shell cat version.txt | sed -e 's,[\r\n]*,,')
+VERSION                   ?= ubi10-$(shell cat version.txt | sed -e 's,[\r\n]*,,')
 CONTAINER_REGISTRY        ?= localhost
 CONTAINER_REGISTRY_LOGIN  ?= unset
 CONTAINER_REGISTRY_PASS   ?= unset
@@ -41,10 +41,10 @@ BUILD_URL                 ?= unset
 BUILD_BRANCH              ?= $(shell git branch --show-current)
 
 JICMP_GIT_REPO_URL        := https://github.com/opennms/jicmp
-JICMP_VERSION             := jicmp-3.0.0-2
+JICMP_VERSION             := jicmp-4.0.0-1
 
 JICMP6_GIT_REPO_URL       := https://github.com/opennms/jicmp6
-JICMP6_VERSION            := jicmp6-3.0.0-2
+JICMP6_VERSION            := jicmp6-4.0.0-1
 
 JATTACH_GIT_REPO_URL      := https://github.com/jattach/jattach
 JATTACH_VERSION           := v2.1

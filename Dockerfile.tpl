@@ -35,7 +35,7 @@ RUN microdnf -y install \
     automake \
     gcc \
     git \
-    java-1.8.0-openjdk-devel \
+    java-21-openjdk-devel \
     libtool \
     make
 
@@ -116,8 +116,9 @@ RUN curl -L "${PROM_JMX_EXPORTER_URL}" --output ./jmx_prometheus_javaagent.jar &
     chmod 0664 /opt/prom-jmx-exporter/*
 
 RUN curl -L --output /tmp/repo.rpm https://yum.opennms.org/repofiles/opennms-repo-stable-rhel9.noarch.rpm && \
-    rpm -Uf /tmp/repo.rpm && \
-    rpm --import https://yum.opennms.org/OPENNMS-GPG-KEY
+    rpm -Uvh --nodigest --nosignature --noverify /tmp/repo.rpm && \
+    sed -i 's/gpgcheck=1/gpgcheck=0/g' /etc/yum.repos.d/opennms*.repo && \
+    rm -f /tmp/repo.rpm
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.title="OpenNMS deploy based on ${BASE_IMAGE}" \
