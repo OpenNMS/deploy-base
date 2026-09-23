@@ -35,7 +35,7 @@ RUN microdnf -y install \
     automake \
     gcc \
     git \
-    java-21-openjdk-devel \
+    java-${JAVA_MAJOR_VERSION}-openjdk-devel \
     libtool \
     make
 
