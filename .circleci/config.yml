@@ -184,7 +184,8 @@ workflows:
             - "docker-content-trust"
             - "docker-publish-account"
           requires:
-            - publish-single-arch
+            - publish-single-arch-linux/amd64-<< matrix.jdk >>
+            - publish-single-arch-linux/arm64-<< matrix.jdk >>
           filters:
             branches:
               only:
