@@ -27,15 +27,25 @@ aliases:
       chmod 600 $KEY_FOLDER/*
       docker trust key load $KEY_FOLDER/$DCT_DELEGATE_KEY_NAME.key
 
+executors:
+  amd64:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: medium
+  arm64:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: arm.medium
+
 jobs:
   local-oci-build:
     parameters:
-      architecture:
-        type: string
+      arch:
+        type: enum
+        enum: [amd64, arm64]
       jdk:
         type: string
-    machine:
-      image: ubuntu-2204:current
+    executor: << parameters.arch >>
     environment:
       DOCKER_CLI_EXPERIMENTAL: enabled
     steps:
@@ -45,13 +55,10 @@ jobs:
           command: |
             docker login -u "${DOCKERHUB_LOGIN}" -p "${DOCKERHUB_PASS}"
       - run:
-          name: multiarch/qemu-user-static
-          command: DOCKER_CONTENT_TRUST=0 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - run:
           name: Single-arch build
           command: |
             make oci \
-              ARCHITECTURE="<< parameters.architecture >>" \
+              ARCHITECTURE="linux/<< parameters.arch >>" \
               JAVA_MAJOR_VERSION="<< parameters.jdk >>"
       - store_artifacts:
           path: ~/project/artifacts/
@@ -59,12 +66,12 @@ jobs:
 
   publish-single-arch:
     parameters:
-      architecture:
-        type: string
+      arch:
+        type: enum
+        enum: [amd64, arm64]
       jdk:
         type: string
-    machine:
-      image: ubuntu-2204:current
+    executor: << parameters.arch >>
     environment:
       DOCKER_CLI_EXPERIMENTAL: enabled
     steps:
@@ -76,13 +83,10 @@ jobs:
           command: |
             docker login -u "${DOCKERHUB_LOGIN}" -p "${DOCKERHUB_PASS}"
       - run:
-          name: multiarch/qemu-user-static
-          command: DOCKER_CONTENT_TRUST=0 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - run:
           name: Push single-arch OCI
           command: |
             make publish \
-              ARCHITECTURE="<< parameters.architecture >>" \
+              ARCHITECTURE="linux/<< parameters.arch >>" \
               JAVA_MAJOR_VERSION="<< parameters.jdk >>" \
               CONTAINER_REGISTRY="${DOCKER_REGISTRY}" \
               TAG_ORG="${DOCKER_ORG}" \
@@ -154,7 +158,7 @@ workflows:
             - "docker-publish-account"
           matrix:
             parameters:
-              architecture: [linux/amd64,linux/arm64]
+              arch: [amd64, arm64]
               jdk: ["21","25"]
           filters:
             branches:
@@ -165,7 +169,7 @@ workflows:
       - publish-single-arch:
           matrix:
             parameters:
-              architecture: [linux/amd64,linux/arm64]
+              arch: [amd64, arm64]
               jdk: ["21","25"]
           context:
             - "docker-content-trust"
@@ -184,8 +188,8 @@ workflows:
             - "docker-content-trust"
             - "docker-publish-account"
           requires:
-            - publish-single-arch-linux/amd64-<< matrix.jdk >>
-            - publish-single-arch-linux/arm64-<< matrix.jdk >>
+            - publish-single-arch-amd64-<< matrix.jdk >>
+            - publish-single-arch-arm64-<< matrix.jdk >>
           filters:
             branches:
               only:
