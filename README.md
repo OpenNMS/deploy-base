@@ -9,7 +9,6 @@ It provides the following major dependencies:
 * OpenJDK JRE (LTS releases)
 * JICMP and JICMP6 libraries
 * JMX Prometheus exporter
-* confd
 * Some tools from the official apt repository for troubleshooting
 
 It can be built for multiple architectures with Docker and the buildx command.

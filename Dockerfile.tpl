@@ -62,7 +62,7 @@ RUN git clone --depth 1 --branch "${JATTACH_VERSION}" "${JATTACH_GIT_REPO_URL}" 
 RUN cd /usr/src/jattach && make
 
 ##
-# Assemble deploy base image with jattach, confd and OpenJDK
+# Assemble deploy base image with jattach and OpenJDK
 ##
 FROM core
 
@@ -77,18 +77,6 @@ ENV JAVA_HOME=${JAVA_HOME}
 # To be able to use DGRAM to send ICMP messages we have to give the java binary CAP_NET_RAW capabilities in Linux.
 COPY do-setcap.sh /usr/local/bin/
 RUN /usr/local/bin/do-setcap.sh
-
-# Install confd
-RUN if [ "$(uname -m)" = "x86_64" ]; then \
-      curl -L "${CONFD_SOURCE}/releases/download/v${CONFD_VERSION}/confd-v${CONFD_VERSION}-linux-amd64.tar.gz" --output /tmp/confd.tar.gz; \
-    elif [ "$(uname -m)" = "armv7l" ]; then \
-      curl -L "${CONFD_SOURCE}/releases/download/v${CONFD_VERSION}/confd-v${CONFD_VERSION}-linux-arm7.tar.gz" --output /tmp/confd.tar.gz; \
-    else \
-      curl -L "${CONFD_SOURCE}/releases/download/v${CONFD_VERSION}/confd-v${CONFD_VERSION}-linux-arm64.tar.gz" --output /tmp/confd.tar.gz; \
-    fi && \
-    cd /usr/bin && \
-    tar -xzf /tmp/confd.tar.gz && \
-    rm -f /tmp/confd.tar.gz
 
 ## Install jicmp
 RUN mkdir -p /usr/lib/jni
